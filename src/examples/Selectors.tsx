@@ -14,15 +14,22 @@ import {atom, useRecoilState} from 'recoil'
 
 const exchangeRate = 0.83
 
+const usdAtom = atom({
+  key: 'usd',
+  default: 1
+})
+
 export const Selectors = () => {
+  const [usd, setUSD] = useRecoilState(usdAtom);
+
   return (
       <div style={{padding: 20}}>
           <Heading size="lg" mb={2}>
               Currency converter
           </Heading>
           <InputStack>
-              <CurrencyInput label="usd" amount={0} />
-              <CurrencyInput label="eur" amount={0} />
+            <CurrencyInput label="usd" amount={usd} onChange={(usd) => setUSD(usd)}/>
+            <CurrencyInput label="eur" amount={usd * exchangeRate} />
           </InputStack>
           <Commission />
       </div>
