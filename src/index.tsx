@@ -6,6 +6,7 @@ import {ChakraProvider} from '@chakra-ui/react'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import { RecoilRoot } from 'recoil'
 import { Atoms } from './examples/Atoms'
+import { Selectors } from './examples/Selectors';
 
 ReactDOM.render(
     <React.StrictMode>
@@ -15,6 +16,9 @@ ReactDOM.render(
                     <Switch>
                         <Route path="/examples/Atoms">
                             <Atoms />
+                        </Route>
+                        <Route path="/examples/Selectors">
+                            <Selectors />
                         </Route>
                         <Route>
                             <Canvas />
