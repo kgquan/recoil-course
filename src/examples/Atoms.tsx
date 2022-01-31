@@ -1,5 +1,13 @@
+import { useState } from 'react';
+
 const DarkModeSwitch = () => {
-  return <input type="checkbox" />
+  const [darkMode, setDarkMode] = useState(false)
+
+  console.log('darkMode', darkMode);
+
+  return <input type="checkbox" checked={darkMode} onChange={(event) => {
+    setDarkMode(event.currentTarget.checked)
+  }}/>
 }
 
 const Button = () => {
