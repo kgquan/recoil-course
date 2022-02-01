@@ -19,17 +19,22 @@ const usdAtom = atom({
   default: 1
 })
 
-const eurSelector = selector({
+const eurSelector = selector<number>({
   key: 'eur',
   get: ({ get }) => {
     const usd = get(usdAtom)
     return usd * exchangeRate
+  },
+  set: ({ set }, newEurValue) => {
+    //@ts-ignore
+    const newUsdValue = newEurValue / exchangeRate;
+    set(usdAtom, newUsdValue);
   }
 })
 
 export const Selectors = () => {
   const [usd, setUSD] = useRecoilState(usdAtom);
-  const eur = useRecoilValue(eurSelector);
+  const [eur, setEUR] = useRecoilState(eurSelector);
 
   return (
       <div style={{padding: 20}}>
@@ -38,7 +43,7 @@ export const Selectors = () => {
           </Heading>
           <InputStack>
             <CurrencyInput label="usd" amount={usd} onChange={(usd) => setUSD(usd)}/>
-            <CurrencyInput label="eur" amount={eur} />
+        <CurrencyInput label="eur" amount={eur} onChange={(eur) => setEUR(eur)}/>
           </InputStack>
           <Commission />
       </div>
