@@ -22,12 +22,26 @@ const usdAtom = atom({
 const eurSelector = selector<number>({
   key: 'eur',
   get: ({ get }) => {
-    const usd = get(usdAtom)
+    let usd = get(usdAtom)
+
+    const commissionEnabled = get(commissionEnabledAtom);
+    if (commissionEnabled) {
+      const commission = get(commissionAtom);
+      usd = removeCommission(usd, commission);
+    }
+
     return usd * exchangeRate
   },
-  set: ({ set }, newEurValue) => {
+  set: ({ set, get }, newEurValue) => {
     //@ts-ignore
-    const newUsdValue = newEurValue / exchangeRate;
+    let newUsdValue = newEurValue / exchangeRate;
+
+    const commissionEnabled = get(commissionEnabledAtom);
+    if (commissionEnabled) {
+      const commission = get(commissionAtom);
+      newUsdValue = addCommission(newUsdValue, commission);
+    }
+
     set(usdAtom, newUsdValue);
   }
 })
